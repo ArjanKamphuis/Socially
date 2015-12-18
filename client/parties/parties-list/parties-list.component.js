@@ -32,6 +32,14 @@ angular.module('socially').directive('partiesList', function() {
 				}
 			});
 			
+			this.map = {
+				center: {
+					latitude: 51,
+					longitude: 5.5
+				},
+				zoom: 8
+			};
+			
 			this.subscribe('users');
 			this.subscribe('parties', () => {
 				return [
