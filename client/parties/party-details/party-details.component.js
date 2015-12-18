@@ -10,7 +10,8 @@ angular.module('socially').directive('partyDetails', function() {
 			this.helpers({
 				party: () => { return Parties.findOne({ _id: $stateParams.partyId }); },
 				users: () => { return Meteor.users.find({}); },
-				isLoggedIn: () => { return Meteor.userId() !== null; }
+				isLoggedIn: () => { return Meteor.userId() !== null; },
+				currentUserId: () => { return Meteor.userId(); }
 			});
 			this.save = () => {
 				Parties.update({ _id: $stateParams.partyId }, {
