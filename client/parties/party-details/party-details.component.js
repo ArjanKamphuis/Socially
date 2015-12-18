@@ -9,7 +9,8 @@ angular.module('socially').directive('partyDetails', function() {
 			this.subscribe('users');
 			this.helpers({
 				party: () => { return Parties.findOne({ _id: $stateParams.partyId }); },
-				users: () => { return Meteor.users.find({}); }
+				users: () => { return Meteor.users.find({}); },
+				isLoggedIn: () => { return Meteor.userId() !== null; }
 			});
 			this.save = () => {
 				Parties.update({ _id: $stateParams.partyId }, {
@@ -35,6 +36,11 @@ angular.module('socially').directive('partyDetails', function() {
 						console.log('Invited!');
 					}
 				});
+			};
+			
+			this.canInvite = () => {
+				if (!this.party) { return false; }
+				return !this.party.public && this.party.owner === Meteor.userId();
 			};
 		}
 	}
