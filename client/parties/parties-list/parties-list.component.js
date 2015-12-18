@@ -13,6 +13,9 @@ angular.module('socially').directive('partiesList', function() {
 				parties: () => {
 					return Parties.find({}, { sort: this.sort });
 				},
+				users: () => {
+					return Meteor.users.find({});
+				},
 				partiesCount: () => {
 					return Counts.get('numberOfParties');
 				},
@@ -59,6 +62,26 @@ angular.module('socially').directive('partiesList', function() {
 				if (!owner) { return 'nobody'; }
 				if (Meteor.userId() !== null && owner._id === Meteor.userId()) { return 'me'; }
 				return owner;
+			};
+			
+			this.rsvp = (partyId, rsvp) => {
+				Meteor.call('rsvp', partyId, rsvp, (error) => {
+					if (error) {
+						console.log('Oops, unable to rsvp!');
+					} else {
+						console.log('RSVP Done!');
+					}
+				});
+			};
+			
+			this.getUserById = (userId) => {
+				return Meteor.users.findOne(userId);
+			};
+			
+			this.outstandingInvitations = (party) => {
+				return _.filter(this.users, (user) => {
+					return (_.contains(party.invited, user._id) && !_.findWhere(party.rsvps, { user: user._id }));
+				});
 			};
 		}
 	}
