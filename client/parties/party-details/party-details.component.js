@@ -48,7 +48,7 @@ angular.module('socially').directive('partyDetails', function() {
 			this.map = {
 				center: {
 					latitude: 51,
-					longitude: 5.5,
+					longitude: 5.5
 				},
 				zoom: 8,
 				events: {

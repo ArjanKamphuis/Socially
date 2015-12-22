@@ -3,7 +3,7 @@ angular.module('socially').directive('partiesList', function() {
 		restrict: 'E',
 		templateUrl: 'client/parties/parties-list/parties-list.html',
 		controllerAs: 'partiesList',
-		controller: function($scope, $reactive, $modal) {
+		controller: function($scope, $reactive, $mdDialog) {
 			$reactive(this).attach($scope);
 			this.perPage = 3;
 			this.orderProperty = '1';
@@ -88,7 +88,9 @@ angular.module('socially').directive('partiesList', function() {
 			});
 			
 			this.removeParty = (party) => {
-				Parties.remove({ _id: party._id });
+				if (confirm('Are you sure to remove party: ' + party.name)) {
+                    Parties.remove({ _id: party._id });
+                }
 			}
 			
 			this.pageChanged = (newPage) => {
@@ -129,9 +131,9 @@ angular.module('socially').directive('partiesList', function() {
 			};
 			
 			this.openAddNewPartyModal = () => {
-				$modal.open({
-					animation: true,
-					template: '<add-new-party-modal></add-new-party-modal>'
+				$mdDialog.show({
+					template: '<add-new-party-modal></add-new-party-modal>',
+                    clickOutsideToClose: true
 				});
 			};
 			this.isRSVP = (rsvp, party) => {
